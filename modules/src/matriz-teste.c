@@ -44,16 +44,32 @@ void exibeRaquete(Plataforma raquete) {
     video_clear();
     video_box(raquete.x, raquete.y, raquete.x2, raquete.y2, video_RED);
     video_show();
-    video_clear();
-    video_box(raquete.x, raquete.y, raquete.x2, raquete.y2, video_RED);
-    video_show();
 }
 
 void checkColision(){
 }
 
+/*Gera a posição e dimensões dos tijolos*/
 void createBricksTable(){
+    int SCREEN_WIDTH = 319;
+    int BRICK_COLUMNS = 8;
+    int BRICK_WIDTH = 40;
+    int BRICK_HEIGHT = 30;
+    int BRICK_ROWS = 4;
 
+    Brick bricks[BRICK_ROWS][BRICK_COLUMNS];
+
+    int brick_offset_x = (SCREEN_WIDTH - (BRICK_COLUMNS * BRICK_WIDTH)) / 2;
+    int brick_offset_y = 50;
+
+    for (int i = 0; i < BRICK_ROWS; i++) {
+        for (int j = 0; j < BRICK_COLUMNS; j++) {
+            bricks[i][j].x = brick_offset_x + j * BRICK_WIDTH;
+            bricks[i][j].y = brick_offset_y + i * BRICK_HEIGHT;
+            bricks[i][j].w = BRICK_WIDTH;
+            bricks[i][j].h = BRICK_HEIGHT;
+        }
+    }
 }
 
 void moverRaquete(Plataforma *raquete, int variacaoX) {
