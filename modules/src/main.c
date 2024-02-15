@@ -1,6 +1,7 @@
 // ideia: o brick tem 2 colisões 
 // muda a cor do brick quando faltar uma colisao
 // adiciona a cor na struct
+// na hora do shutdown: shutdown -P now
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -52,17 +53,17 @@ void initBlocks(Block blocks[][BLOCK_COLS]) {
     int brick_offset_x = 4;
     int brick_offset_y = 25;
     int somadorX;
-    int somadorY = 3;
+    int somadorY = 1;
 
     for (i = 0; i < BLOCK_ROWS; i++) {
-        somadorX = 3;
+        somadorX = 1;
         for (j = 0; j < BLOCK_COLS; j++) {
             blocks[i][j].x = (brick_offset_x + (j * BLOCK_WIDTH) + somadorX);
             blocks[i][j].y = (brick_offset_y + (i * BLOCK_HEIGHT) + somadorY);
             blocks[i][j].destroyed = 0;
-            somadorX += 3;
+            somadorX += 1;
         }
-        somadorY += 3;
+        somadorY += 1;
     }
 }
 
@@ -133,18 +134,18 @@ void exibeElementos(Plataforma raquete, Ball bola, Block blocos[][BLOCK_COLS]) {
     exibeBlocos(blocos);
     video_box(bola.x, bola.y, bola.x + bola.size, bola.y + bola.size, video_RED); //Exibe bola
     video_box(raquete.x, raquete.y, raquete.x2, raquete.y2, video_RED);
-    video_line(0, 23, 319, 23, video_WHITE); //linha de cima
-    video_line(0, 23, 0, 239, video_WHITE); //linha do lado esquerdo
-    video_line(319, 23, 319, 239, video_WHITE); //linha do lado direito
+    video_line(4, 23, 316, 23, video_WHITE); //linha de cima
+    video_line(4, 23, 4, 239, video_WHITE); //linha do lado esquerdo
+    video_line(316, 23, 316, 239, video_WHITE); //linha do lado direito
     video_show();
     //para escrever no outro buffer, colocamos a exibição duas vezes
     video_clear();
     exibeBlocos(blocos);
     video_box(bola.x, bola.y, bola.x + bola.size, bola.y + bola.size, video_RED); //Exibe bola
     video_box(raquete.x, raquete.y, raquete.x2, raquete.y2, video_RED);
-    video_line(0, 23, 319, 23, video_WHITE); //linha de cima
-    video_line(0, 23, 0, 239, video_WHITE); //linha do lado esquerdo
-    video_line(319, 23, 319, 239, video_WHITE); //linha do lado direito
+    video_line(4, 23, 316, 23, video_WHITE); //linha de cima
+    video_line(4, 23, 4, 239, video_WHITE); //linha do lado esquerdo
+    video_line(316, 23, 316, 239, video_WHITE); //linha do lado direito
     video_show();
 }
 
@@ -152,7 +153,7 @@ int main() {
     int colunas, linhas, tcolunas, tlinhas;
     int ptr_x, ptr_y, ptr_z, ptr_ready, ptr_tap, ptr_dtap, ptr_msg; //Dados do accel
 
-    if (initialize(&colunas, &linhas, &tcolunas, &tlinhas)) {
+    if (initialize(&colunas, &linhas, &tcolunas, &tlinhas) && KEY_open()) {
         int x = (colunas - 60) / 2;
         int y = linhas - 10;
         Plataforma raquete = criarRaquete(x, y);
@@ -169,6 +170,9 @@ int main() {
         accel_init();
         accel_format(1, 2);
         accel_calibrate();
+
+        int KEY_data;
+
         // Loop principal do jogo
         while (1) {
             // Lê os dados do acelerômetro
@@ -191,7 +195,7 @@ int main() {
             bola.y += bola.dy;
 
             // Verifica colisão com as paredes
-            if (bola.x <= 0 || (bola.x + bola.size) >= 318) {
+            if (bola.x <= 4 || (bola.x + bola.size) >= 315) {
                 bola.dx = -bola.dx;
             }
             if (bola.y <= 24) {
@@ -217,12 +221,25 @@ int main() {
                 }
             }
 
+            KEY_read(&KEY_data);
+
+            if (KEY_data == 1){ //Para pausar
+                while (1){
+                    KEY_read(&KEY_data);
+                    if (KEY_data == 1){ //Para despausar
+                        break;
+                    }
+                }
+            }
+
             exibeElementos(raquete, bola, blocos);
 
         }
 
         // Fecha a conexão com o acelerômetro
         accel_close();
+    } else {
+        printf("Erro ao inicializar VGA ou botão!\n");
     }
 
     video_close();
