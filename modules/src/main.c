@@ -12,8 +12,8 @@
 // Dimensões do bloco
 const int BLOCK_WIDTH = 28;
 const int BLOCK_HEIGHT = 10;
-const int BLOCK_ROWS = 2;
-const int BLOCK_COLS = 4;
+const int BLOCK_ROWS = 4;
+const int BLOCK_COLS = 10;
 
 //Estrutura para representar a raquete (Plataforma)
 typedef struct plataforma {
@@ -48,16 +48,21 @@ void initBlocks(Block blocks[][BLOCK_COLS]) {
 
     int i = 0;
     int j = 0;
-
-    int brick_offset_x = (219 - (BLOCK_COLS * BLOCK_WIDTH)) / 2;
-    int brick_offset_y = 50;
+    //int brick_offset_x = (219 - (BLOCK_COLS * BLOCK_WIDTH)) / 2;
+    int brick_offset_x = 4;
+    int brick_offset_y = 25;
+    int somadorX;
+    int somadorY = 3;
 
     for (i = 0; i < BLOCK_ROWS; i++) {
+        somadorX = 3;
         for (j = 0; j < BLOCK_COLS; j++) {
-            blocks[i][j].x = brick_offset_x + (j * BLOCK_WIDTH);
-            blocks[i][j].y = brick_offset_y + (i * BLOCK_HEIGHT);
+            blocks[i][j].x = (brick_offset_x + (j * BLOCK_WIDTH) + somadorX);
+            blocks[i][j].y = (brick_offset_y + (i * BLOCK_HEIGHT) + somadorY);
             blocks[i][j].destroyed = 0;
+            somadorX += 3;
         }
+        somadorY += 3;
     }
 }
 
@@ -128,11 +133,18 @@ void exibeElementos(Plataforma raquete, Ball bola, Block blocos[][BLOCK_COLS]) {
     exibeBlocos(blocos);
     video_box(bola.x, bola.y, bola.x + bola.size, bola.y + bola.size, video_RED); //Exibe bola
     video_box(raquete.x, raquete.y, raquete.x2, raquete.y2, video_RED);
+    video_line(0, 23, 319, 23, video_WHITE); //linha de cima
+    video_line(0, 23, 0, 239, video_WHITE); //linha do lado esquerdo
+    video_line(319, 23, 319, 239, video_WHITE); //linha do lado direito
     video_show();
+    //para escrever no outro buffer, colocamos a exibição duas vezes
     video_clear();
     exibeBlocos(blocos);
     video_box(bola.x, bola.y, bola.x + bola.size, bola.y + bola.size, video_RED); //Exibe bola
     video_box(raquete.x, raquete.y, raquete.x2, raquete.y2, video_RED);
+    video_line(0, 23, 319, 23, video_WHITE); //linha de cima
+    video_line(0, 23, 0, 239, video_WHITE); //linha do lado esquerdo
+    video_line(319, 23, 319, 239, video_WHITE); //linha do lado direito
     video_show();
 }
 
@@ -162,7 +174,7 @@ int main() {
             // Lê os dados do acelerômetro
             accel_read(&ptr_ready, &ptr_tap, &ptr_dtap, &ptr_x, &ptr_y, &ptr_z, &ptr_msg);
 
-            printf("x: %d\n", ptr_x);
+            //printf("x: %d\n", ptr_x);
 
             if (!(ptr_x <= 15 && ptr_x >= -15)){
                 if (ptr_x < -15 && (raquete.x - 6) >= 0){ //Move para esquerda
@@ -179,10 +191,10 @@ int main() {
             bola.y += bola.dy;
 
             // Verifica colisão com as paredes
-            if (bola.x <= 0 || (bola.x + bola.size) >= 319) {
+            if (bola.x <= 0 || (bola.x + bola.size) >= 318) {
                 bola.dx = -bola.dx;
             }
-            if (bola.y <= 0) {
+            if (bola.y <= 24) {
                 bola.dy = -bola.dy;
             }
            
