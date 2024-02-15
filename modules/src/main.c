@@ -1,3 +1,7 @@
+// ideia: o brick tem 2 colisões 
+// muda a cor do brick quando faltar uma colisao
+// adiciona a cor na struct
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <intelfpgaup/video.h>
@@ -8,9 +12,8 @@
 // Dimensões do bloco
 const int BLOCK_WIDTH = 28;
 const int BLOCK_HEIGHT = 10;
-const int NUM_BLOCKS = 33;
-const int BLOCK_ROWS = 3;
-const int BLOCK_COLS = 11;
+const int BLOCK_ROWS = 2;
+const int BLOCK_COLS = 4;
 
 //Estrutura para representar a raquete (Plataforma)
 typedef struct plataforma {
@@ -41,20 +44,26 @@ void initBall(Ball* ball) {
 }
 
 // Função para inicializar os blocos
-void initBlocks(Block blocks[]) {
-    int blockWidthWithSpacing = BLOCK_WIDTH + 1;
-    int blockHeightWithSpacing = BLOCK_HEIGHT + 1;
+void initBlocks(Block blocks[][BLOCK_COLS]) {
+
     int i = 0;
-    for (i; i < NUM_BLOCKS; ++i) {
-        blocks[i].x = (i % BLOCK_COLS) * blockWidthWithSpacing;
-        blocks[i].y = (i / BLOCK_COLS) * blockHeightWithSpacing;
-        blocks[i].destroyed = false;
+    int j = 0;
+
+    int brick_offset_x = (219 - (BLOCK_COLS * BLOCK_WIDTH)) / 2;
+    int brick_offset_y = 50;
+
+    for (i = 0; i < BLOCK_ROWS; i++) {
+        for (j = 0; j < BLOCK_COLS; j++) {
+            blocks[i][j].x = brick_offset_x + (j * BLOCK_WIDTH);
+            blocks[i][j].y = brick_offset_y + (i * BLOCK_HEIGHT);
+            blocks[i][j].destroyed = 0;
+        }
     }
 }
 
 // Função para verificar a colisão da bola com a raquete
 int checkCollision(const Ball* ball, const Plataforma* paddle) {
-    if (ball->y + ball->size == paddle->y &&
+    if (ball->y + 8 == paddle->y && // 6 +2 -> a bola anda de 6 em 6 e 2 é o tamanho da bola
         ball->x >= paddle->x &&
         ball->x <= paddle->x2) {
         return 0;
@@ -83,7 +92,7 @@ Plataforma criarRaquete(int x, int y) {
     Plataforma p;
     p.x = x;
     p.y = y;
-    p.x2 = x + 80;
+    p.x2 = x + 60;
     p.y2 = y - 5;
     return p;
 }
@@ -98,55 +107,49 @@ bool initialize(int *colunas, int *linhas, int *tcolunas, int *tlinhas) {
     return false;
 }
 
-//Exibe a raquete com as dimensões antes especificadas
-void exibeRaquete(Plataforma raquete, Ball bola, Block blocos[]) {
-    video_clear();
-    exibeBlocos(blocos);
-    video_box(bola.x, bola.y, bola.x + bola.size, bola.y + bola.size, video_RED);
-    video_box(raquete.x, raquete.y, raquete.x2, raquete.y2, video_RED);
-    video_show();
-    video_clear();
-    exibeBlocos(blocos);
-    video_box(bola.x, bola.y, bola.x + bola.size, bola.y + bola.size, video_RED);
-    video_box(raquete.x, raquete.y, raquete.x2, raquete.y2, video_RED);
-    video_show();
-}
-
-//Exibe a bola nas dimensões antes especificadas
-/*void exibeBola(Ball bola){
-    video_clear();
-    video_box(bola.x, bola.y, bola.x + bola.size, bola.y + bola.size, video_RED);
-    video_show();
-    video_clear();
-    video_box(bola.x, bola.y, bola.x + bola.size, bola.y + bola.size, video_RED);
-    video_clear();
-}*/
-
 // Desenha os blocos
-void exibeBlocos(Block blocos[]){
+void exibeBlocos(Block blocos[][BLOCK_COLS]){
+
     int i = 0;
-    for (i; i < NUM_BLOCKS; ++i) {
-        if (!blocos[i].destroyed) {
-            video_box(blocos[i].x, blocos[i].y, blocos[i].x + BLOCK_WIDTH, blocos[i].y + BLOCK_HEIGHT, video_RED);
+    int j = 0;
+
+    for (i = 0; i < BLOCK_ROWS; i++){
+        for (j = 0; j < BLOCK_COLS; j++){
+            if (!blocos[i][j].destroyed){
+                video_box(blocos[i][j].x, blocos[i][j].y, blocos[i][j].x + BLOCK_WIDTH, blocos[i][j].y + BLOCK_HEIGHT, video_RED);
+            }
         }
     }
 }
 
+//Exibe a raquete com as dimensões antes especificadas
+void exibeElementos(Plataforma raquete, Ball bola, Block blocos[][BLOCK_COLS]) {
+    video_clear();
+    exibeBlocos(blocos);
+    video_box(bola.x, bola.y, bola.x + bola.size, bola.y + bola.size, video_RED); //Exibe bola
+    video_box(raquete.x, raquete.y, raquete.x2, raquete.y2, video_RED);
+    video_show();
+    video_clear();
+    exibeBlocos(blocos);
+    video_box(bola.x, bola.y, bola.x + bola.size, bola.y + bola.size, video_RED); //Exibe bola
+    video_box(raquete.x, raquete.y, raquete.x2, raquete.y2, video_RED);
+    video_show();
+}
+
 int main() {
     int colunas, linhas, tcolunas, tlinhas;
-    int ptr_x, ptr_y, ptr_z, ptr_ready, ptr_tap, ptr_dtap, ptr_msg;
-    int ultimo_x = 0;
+    int ptr_x, ptr_y, ptr_z, ptr_ready, ptr_tap, ptr_dtap, ptr_msg; //Dados do accel
 
     if (initialize(&colunas, &linhas, &tcolunas, &tlinhas)) {
-        int x = (colunas - 80) / 2;
+        int x = (colunas - 60) / 2;
         int y = linhas - 10;
         Plataforma raquete = criarRaquete(x, y);
         Ball bola;
         initBall(&bola);
-        Block blocos[NUM_BLOCKS];
+        Block blocos[BLOCK_ROWS][BLOCK_COLS];
         initBlocks(blocos);
         //exibeBlocos(blocos);
-        exibeRaquete(raquete, bola, blocos);
+        exibeElementos(raquete, bola, blocos);
         //exibeBola(bola);
 
         // Abre a conexão com o acelerômetro
@@ -171,11 +174,6 @@ int main() {
                 }
             }
 
-            //ultimo_x = ptr_x;
-
-            // Move a raquete de acordo com a variação do eixo X
-            //moverRaquete(&raquete, variacaoX);
-           
             // Move a bola
             bola.x += bola.dx;
             bola.y += bola.dy;
@@ -197,22 +195,18 @@ int main() {
 
             // Verifica colisão com os blocos
             int i = 0;
-            for (i; i < NUM_BLOCKS; ++i) {
-                if (checkBlockCollision(&bola, &blocos[i])) {
-                    blocos[i].destroyed = true;
-                    bola.dy = -bola.dy;
+            int j = 0;
+            for (i = 0; i < BLOCK_ROWS; i++){
+                for (j = 0; j < BLOCK_COLS; j++){
+                    if (checkBlockCollision(&bola, &blocos[i][j])){
+                        blocos[i][j].destroyed = 1;
+                        bola.dy = -bola.dy;
+                    }
                 }
             }
 
-            //Exibe os blocos atualizados
-            //exibeBlocos(blocos);
-            // Exibe a raquete na nova posição
-            exibeRaquete(raquete, bola, blocos);
-            //Exibe a bola na nova posição
-            //exibeBola(bola);
-            // Aguarda um curto período de tempo para evitar que o loop seja muito rápido
-            //unsleep(); // Espera 100ms (0.1 segundo)
-           
+            exibeElementos(raquete, bola, blocos);
+
         }
 
         // Fecha a conexão com o acelerômetro
@@ -223,3 +217,4 @@ int main() {
     return 0;
 
 }
+
