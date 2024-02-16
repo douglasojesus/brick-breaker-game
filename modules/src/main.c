@@ -63,16 +63,16 @@ void initBlocks(Block blocks[][BLOCK_COLS]) {
     int brick_offset_y = 25;
     // Somadores responsáveis por auxiliar no espaçamento entre blocos.
     int somadorX;
-    int somadorY = 1;
+    int somadorY = 3;
     for (i = 0; i < BLOCK_ROWS; i++) {
-        somadorX = 1;
+        somadorX = 3;
         for (j = 0; j < BLOCK_COLS; j++) {
             blocks[i][j].x = (brick_offset_x + (j * BLOCK_WIDTH) + somadorX);
             blocks[i][j].y = (brick_offset_y + (i * BLOCK_HEIGHT) + somadorY);
             blocks[i][j].destroyed = 0;
-            somadorX += 1;
+            somadorX += 3;
         }
-        somadorY += 1;
+        somadorY += 3;
     }
 }
 
@@ -171,7 +171,11 @@ void exibeBlocos(Block blocos[][BLOCK_COLS]){
     É executado duas vezes para escrever no Buffer para próxima exibição. Isso garante que não
     haja um efeito de 'pisca' no monitor.
 */
-void exibeElementos(Plataforma raquete, Ball bola, Block blocos[][BLOCK_COLS]) {
+void exibeElementos(Plataforma raquete, Ball bola, Block blocos[][BLOCK_COLS], int pontuacao) {
+    char palavra[]={'S', 'C', 'O', 'R', 'E', '\0'};
+    char str_pontuacao[20];
+    sprintf(str_pontuacao, "%d", pontuacao); // Casting da pontuação
+
     video_clear();
     exibeBlocos(blocos);
     // Exibe bola
@@ -184,6 +188,9 @@ void exibeElementos(Plataforma raquete, Ball bola, Block blocos[][BLOCK_COLS]) {
     video_line(4, 23, 4, 239, video_WHITE);
     // Exibe linha do lado direito
     video_line(316, 23, 316, 239, video_WHITE); //linha do lado direito
+    // Exibe texto
+    video_text(3, 3, palavra);
+    video_text(11, 3, str_pontuacao);
     video_show();
 
     video_clear();
@@ -198,12 +205,16 @@ void exibeElementos(Plataforma raquete, Ball bola, Block blocos[][BLOCK_COLS]) {
     video_line(4, 23, 4, 239, video_WHITE);
     // Exibe linha do lado direito
     video_line(316, 23, 316, 239, video_WHITE); //linha do lado direito
+    // Exibe texto
+    video_text(3, 3, palavra);
+    video_text(11, 3, str_pontuacao);
     video_show();
 }
 
 int main() {
     int colunas, linhas, tcolunas, tlinhas;
     int ptr_x, ptr_y, ptr_z, ptr_ready, ptr_tap, ptr_dtap, ptr_msg; //Dados do accel
+    int pontuacao = 0;
 
     // Se a saída do vídeo e a entrada do botão foram inicializadas
     if (initialize(&colunas, &linhas, &tcolunas, &tlinhas) && KEY_open()) {
@@ -225,7 +236,7 @@ int main() {
         accel_format(1, 2);
         accel_calibrate();
 
-        exibeElementos(raquete, bola, blocos);
+        exibeElementos(raquete, bola, blocos, pontuacao);
 
         // Loop principal do jogo
         while (1) {
@@ -277,6 +288,7 @@ int main() {
                     if (checkBlockCollision(&bola, &blocos[i][j])){
                         blocos[i][j].destroyed = 1;
                         bola.dy = -bola.dy;
+                        pontuacao += 1;
                     }
                 }
             }
@@ -295,7 +307,7 @@ int main() {
                 }
             }
 
-            exibeElementos(raquete, bola, blocos);
+            exibeElementos(raquete, bola, blocos, pontuacao);
 
         }
 
