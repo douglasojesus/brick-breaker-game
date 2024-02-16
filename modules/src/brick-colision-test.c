@@ -103,23 +103,34 @@ int checkCollision(const Ball* ball, const Plataforma* paddle) {
     return -1;
 }
 
+
 /*
-    Função que verifica a colisão da bola com um bloco.
-    Verifica se o bloco ainda não foi destruído (!bloco->destroyed).
-    Verifica se a posição horizontal (x) da bola está dentro dos 
-    limites horizontais do bloco (bola->x >= bloco->x && bola->x <= bloco->x + BLOCK_WIDTH).
-    Verifica se a posição vertical (y) da bola está dentro dos 
-    limites verticais do bloco (bola->y >= bloco->y && bola->y <= bloco->y + BLOCK_HEIGHT).
+if( bola->x >= bloco->x && bola->x <= (bloco->x + BLOCK_WIDTH) && 
+(bola->y == bloco->y || bola->y == bloco->y + BLOCK_HEIGHT)): 
+Verifica se a bola colidiu com o bloco na horizontal (nas bordas esquerda ou direita do bloco) 
+ou na vertical (na parte superior ou inferior do bloco). Retorna 1 se houve uma colisão horizontal 
+e 0 se houve uma colisão vertical.
+
+else if( bola->y >= bloco->y && bola->y <= bloco->y + BLOCK_HEIGHT && 
+(bola->x == bloco->x || bola->x == bloco->x + BLOCK_WIDTH)): Verifica se a bola colidiu 
+com o bloco na vertical (nas bordas superior ou inferior do bloco). Retorna 0 se houve 
+uma colisão horizontal e 1 se houve uma colisão vertical.
+
+Se nenhuma colisão for detectada, retorna -1.
 */
 int checkBlockCollision(const Ball* bola, const Block* bloco) {
-    if (!bloco->destroyed &&
-        bola->x >= bloco->x &&
-        bola->x <= bloco->x + BLOCK_WIDTH &&
-        bola->y >= bloco->y &&
-        bola->y <= bloco->y + BLOCK_HEIGHT) {
-        return 1;
-    }
-    return 0;
+    if (!bloco->destroyed){
+        if( bola->x >= bloco->x && // Não seria bola->x <= bloco->x? -> para estar na esquerda
+            bola->x <= (bloco->x + BLOCK_WIDTH) && // Verifica na vertical pela esquerda
+            (bola->y == bloco->y || bola->y == (bloco->y + BLOCK_HEIGHT))){ // Verifica na horizontal pela parte de baixo
+                return 1;
+        } else if(  bola->y >= bloco->y && // Não seria bola->y <= bloco->y?
+                    bola->y <= (bloco->y + BLOCK_HEIGHT) &&  // Verifica na horizontal pela parte de coma
+                    (bola->x == bloco->x || bola->x == bloco->x + BLOCK_WIDTH)){ // Verifica na vertical pela direita
+                        return 0;
+        }
+    } 
+    return -1;
 }
 
 /*
@@ -274,11 +285,11 @@ int main() {
             int j = 0;
             for (i = 0; i < BLOCK_ROWS; i++){
                 for (j = 0; j < BLOCK_COLS; j++){
-                    if (checkBlockCollision(&bola, &blocos[i][j])){
+                    if (checkBlockCollision(&bola, &blocos[i][j]) == 1){
                         blocos[i][j].destroyed = 1;
                         bola.dy = -bola.dy;
                     }
-                    else {
+                    else if(checkBlockCollision(&bola, &blocos[i][j]) == 0){
                         blocos[i][j].destroyed = 1;
                         bola.dx = -bola.dx;
                     }
