@@ -1,9 +1,3 @@
-// ideia: o brick tem 2 colisões 
-// muda a cor do brick quando faltar uma colisao
-// adiciona a cor na struct
-// na hora do shutdown: shutdown -P now
-// ideia: 
-
 #include <stdio.h>
 #include <intelfpgaup/video.h>
 #include <intelfpgaup/accel.h>
