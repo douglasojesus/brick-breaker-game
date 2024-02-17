@@ -8,6 +8,7 @@
 #include <intelfpgaup/video.h>
 #include <intelfpgaup/accel.h>
 #include <intelfpgaup/KEY.h>
+#include <intelfpgaup/HEX.h>
 #include <unistd.h>
 
 /*
@@ -260,7 +261,8 @@ int main() {
     int ptr_x, ptr_y, ptr_z, ptr_ready, ptr_tap, ptr_dtap, ptr_msg; //Dados do accel
     int pontuacao = 0;
     int recorde = 0;
-    int perdeu = 0;
+    int gameOver = 0;
+    int vidas = 3;
 
     // Se a saída do vídeo e a entrada do botão foram inicializadas
     if (initialize(&colunas, &linhas, &tcolunas, &tlinhas) && KEY_open()) {
@@ -276,6 +278,8 @@ int main() {
         initBlocks(blocos);
         // Inicialização do botão
         int KEY_data;
+        // Inicialização do display de 7 segmentos
+        HEX_open();
         // Inicialização do acelerômetro
         accel_open();
         accel_init();
@@ -365,30 +369,29 @@ int main() {
                 }
             }
 
-            // Bug: com 5, nunca será multiplico de 40
             // Se quebrou todos os blocos
             if (pontuacao != 0 && (pontuacao % (BLOCK_COLS*BLOCK_ROWS) == 0)){
                 initBlocks(blocos);
                 initBall(&bola);
-                pontuacao += 5;
-                if (bola.dx < 0){
-                    bola.dx -= 2;
-                } else {
-                    bola.dx += 2;
-                } 
-                if (bola.dy < 0){
-                    bola.dy -= 2;
-                } else {
-                    bola.dy += 2;
-                }
+                pontuacao += 1;
             }
 
-            //verifica se a bola caiu
+            // Verifica se a bola caiu e decrementa a vida
             if(bola.y >= 238){
-                perdeu = 1;
+                vidas -= 1;
+                if (vidas == 0){
+                    gameOver = 1;
+                    break;
+                }
+                initBall(&bola);
+                raquete = criarRaquete(x, y);
             }
 
-            while (perdeu){
+            // Exibe a vida no display de 7 segmentos
+            HEX_set(vidas);
+
+            // Estado de game over
+            while (gameOver){
                 endPage();
                 KEY_read(&KEY_data);
                 if(KEY_data == 1){
@@ -397,6 +400,7 @@ int main() {
                     initBall(&bola);
                     initBlocks(blocos);
                     exibeElementos(raquete, bola, blocos, pontuacao, &recorde);
+                    vidas = 3;
                     perdeu = 0;
                 }
             }
@@ -409,7 +413,8 @@ int main() {
     } else {
         printf("Erro ao inicializar VGA ou botão!\n");
     }
-    // Fecha a conexão com o vídeo/VGA
+    // Fecha a conexão com o display de sete segmentos e o vídeo/VGA
+    HEX_close();
     video_close();
     return 0;
 }
