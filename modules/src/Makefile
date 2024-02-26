@@ -1,12 +1,19 @@
+CC=gcc
+CLIBS=-lintelfpgaup
+CFLAGS=-Wall -std=c99
+
+SRC=main.c
+OUT=main
+
 all: build run
 
-build: final.c
-	gcc final.c -o final -lintelfpgaup -std=c99
+build: $(SRC)
+	gcc $(SRC) -o $(OUT) $(CLIBS) $(CFLAGS)
 
-run: final
-	./final
+run: $(OUT)
+	./$(OUT)
 
 clean:
-	rm -f final
+	rm -f $(OUT)
 
 .PHONY: all build run clean
