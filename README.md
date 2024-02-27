@@ -202,6 +202,30 @@ O padrão VGA é conhecido por sua resolução de vídeo de 640x480 pixels, embo
 
 Para utilizar a interface VGA, os dispositivos devem ser equipados com portas VGA correspondentes, geralmente na forma de conectores macho e fêmea de 15 pinos. Ao conectar um dispositivo de exibição a um computador ou outro dispositivo fonte através da interface VGA, é possível visualizar e interagir com conteúdo de vídeo com facilidade e clareza.
 
+<h3>VGA no DE1-SOC</h3>
+No DE1-SOC, há uma porta de saída de vídeo conectada a um controlador VGA integrado que pode ser conectado a um monitor VGA padrão. A qual a porta de saída de vídeo suporta uma resolução de 640 x 480 pixels. A imagem a ser exibida pela porta de saída pode vim tanto de um buffer de pixels quanto de um buffer de caracteres.
+
+O Buffer de pixels da porta de saída de vídeo contém os dados de cor de cada pixel a ser exibido. Este buffer fornece uma resolução de imagem de 320 × 240 pixels, com a coordenada 0,0 no canto superior esquerdo da imagem. Para suportar a resolução de tela de 640 × 480, cada valor de pixel no buffer de pixels é duplicado nas dimensões x e y quando está sendo exibido na tela.
+
+Cada cor de pixel é representada como uma meia palavra de 16 bits, com cinco bits para os componentes azul e vermelho e seis bits para o verde. Os pixels são endereçados no buffer de pixels usando a combinação de um endereço base e um deslocamento x,y. No computador DE1-SoC, o endereço padrão do buffer de pixel é 0xC8000000, que corresponde ao endereço inicial da memória no chip FPGA.
+
+Um controlador de buffer de pixel dedicado lê continuamente esses dados de pixel a partir de endereços sequenciais na memória correspondente para exibição na tela. Você pode criar uma imagem escrevendo valores de cores nos endereços de pixel conforme descrito acima. É possível modificar os dados dos pixels a qualquer momento simplesmente escrevendo nos endereços dos pixels, permitindo assim a alteração da imagem mesmo durante o processo de exibição.
+
+No entanto, para evitar fazer alterações ao buffer de pixel enquanto ele está sendo exibido, pode-se usar o conceito de buffer duplo. Neste esquema, dois buffers de pixels estão envolvidos, chamados de buffers frontal e traseiro. Isso permite que uma imagem seja renderizada em um buffer enquanto o outro está sendo exibido, proporcionando uma transição suave entre as imagens e evitando artefatos visuais durante a atualização.
+
+No contexto do DE1-SoC, o controlador de buffer de pixel inclui uma interface de programação através de um conjunto de registros. O registro no endereço 0xFF203020 é denominado registro Buffer, enquanto o registro no endereço 0xFF203024 é o registro Backbuffer. Cada um desses registros armazena o endereço inicial de um buffer de pixel.
+
+Por padrão, o registro Buffer contém o endereço do buffer de pixels atualmente exibido na tela, enquanto o registro Backbuffer tem o mesmo valor. No entanto, o software pode modificar o endereço armazenado no registro Backbuffer, criando assim um segundo buffer de pixel.
+
+Uma troca de buffer de pixel ocorre escrevendo o valor 1 no registro Buffer. Essa operação não afeta diretamente o conteúdo do registro Buffer, mas troca os conteúdos dos registros Buffer e Backbuffer. Essa troca ocorre no final de um ciclo de desenho de tela, após a exibição do último pixel no canto inferior direito, que é sincronizado com o tempo vertical de sincronização, ocorrendo a cada 1/60 segundos.
+
+O software pode verificar o bit S no registro de status para saber quando ocorreu a sincronização vertical. Escrever o valor 1 no registro Buffer faz com que S seja definido como 1, e quando a troca dos registros Buffer e Backbuffer é concluída, S é redefinido para 0.
+
+Na prática, enquanto a imagem contida no buffer de pixels apontado pelo registro Buffer está sendo exibida, uma nova imagem é desenhada no buffer de pixels apontado pelo registro Backbuffer. Quando essa nova imagem está pronta para ser exibida, uma troca de buffer de pixels é realizada. Dessa forma, a próxima imagem a ser exibida é sempre desenhada no buffer de pixels "traseiro", e os dois ponteiros de buffer de pixel são trocados quando a nova imagem está pronta para ser exibida. Cada vez que uma troca é realizada, o software precisa sincronizar com a porta de saída de vídeo, aguardando até que o bit S no registro de status se torne 0.
+
+O buffer de caracteres para a porta de saída de vídeo é armazenado na memória on-chip no FPGA na placa DE1-SoC. Este buffer fornece uma resolução de 80 × 60 caracteres, onde cada caractere ocupa um bloco de 8 × 8 pixels na tela. Os caracteres são armazenados em cada um dos locais usando seus códigos ASCII; quando esses códigos de caracteres são exibidos no monitor, o buffer de caracteres gera automaticamente o padrão correspondente de pixels para cada caractere usando uma fonte integrada.
+
+Os caracteres são endereçados na memória usando a combinação de um endereço base, que tem o valor 0xC9000000, e um deslocamento x,y. Usando este esquema, o caractere na localização 0,0 tem o endereço 0xC9000000, o caractere 1,0 tem o endereço base de endereço + (000000 0000001)₂ = 0xC9000001, o caractere 0,1 tem a base de endereço + (000001 0000000)₂ = 0xC9000080, e o caractere na localização 79,59 tem a base de endereço + (111011 1001111)₂ = 0xC9001DCF.
 
 <h1 id="desenvolvimento" align="center">Desenvolvimento e Descrição em Alto Nível</h1>
 
