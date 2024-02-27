@@ -93,6 +93,8 @@ A DE1-SoC (Cyclone V SoC Development and Education Board) é uma placa de desenv
   - A DE1-SoC possui botões e interruptores que podem ser utilizados como entradas do usuário em projetos, oferecendo uma forma de interação física.
 
 <h2>Acelerômetro </h2>
+<h3>Funcionamento geral do dispositivo </h3>
+
 Um acelerômetro é um dispositivo que mede a aceleração experimentada por um objeto em relação à livre aceleração de queda devido à gravidade. A maioria dos acelerômetros mede a aceleração em três direções espaciais: X, Y e Z. Essa capacidade tridimensional permite a detecção de movimentos em qualquer direção. Dessa forma, sua utilidade é notável em diversas aplicações, desde dispositivos móveis (para orientação automática da tela) até carros (para acionamento de airbags) e dispositivos médicos.
 
 Existem diversos tipos de acelerômetros, dentre eles, temos alguns mais modernos que utilizam a tecnologia MEMS (Microeletromecânica) para detectar mudanças na aceleração. Essa tecnologia envolve pequenas estruturas mecânicas em escala microscópica dentro do dispositivo. Na Figura X vemos as três principais estruturas presentes neste tipo de dispositivo, sendo eles: a massa de prova, o substrato e os eletrodos.
@@ -118,7 +120,49 @@ A capacitância é inversamente proporcional à distância (Figura X), dessa for
 
 Porém esse processo todo é capaz de ler os valores de aceleração em um só eixo, ou seja, em apenas uma direção. Sendo assim, necessita-se usar outras estruturas como essa posicionadas estrategicamente para lermos em direções diferentes.
 
-O acelerômetro digital presente na placa é o ADXL345 da Analog Devices. Ele utiliza a tecnologia MEMS para medir a aceleração em três direções (X, Y e Z). O sensor acoplado possui uma resolução ajustável, permitindo que você escolha a precisão desejada nas leituras. Os dados de aceleração são digitalizados e apresentados em formato digital para fácil processamento por dispositivos conectados.
+<h3>Comunicação entre a placa DE1-SoC e o acelerômetro </h3>
+
+O acelerômetro digital presente na placa é o ADXL345 da Analog Devices, também conhecido como G-sensor. Ele utiliza a tecnologia MEMS para medir a aceleração em três direções (X, Y e Z). O sensor acoplado possui uma resolução ajustável, permitindo que você escolha a precisão desejada nas leituras. 
+
+Os dados de aceleração são digitalizados e apresentados em formato digital para fácil processamento por dispositivos conectados. A saída digitalizada é formatada como 16 bits em complemento de dois e pode ser acessada por meio da interface I2C. O sensor ADXL345 fornece interfaces I2C e SPI. A interface I2C é selecionada configurando o pino CS como alto na placa. O endereço I2C do G-sensor é 0xA6/0xA7.
+
+A interface I2C (Circuito Interintegrado) é um protocolo de comunicação serial utilizado para a transferência de dados entre dispositivos em um barramento. No contexto do sensor de acelerômetro ADXL345, a comunicação I2C é utilizada para acessar e transferir dados digitais entre a placa DE1-SoC (HPS - Hard Processor System) e o sensor ADXL345 (Figura X).
+
+As conexões e informações relacionadas aos pinos (FPGA Pin) e suas funcionalidades na interface entre o HPS (Hard Processor System) e o sensor G (acelerômetro) na placa DE1-SoC estão representadas na tabela 1.
+
+Nomes dos sinais e suas descrições:
+
+- HPS_GSENSOR_INT: Sinal de interrupção do sensor G para o HPS.
+
+- HPS_I2C1_SCLK: É o sinal de clock (SCLK) para a interface I2C1 do HPS, que é compartilhado com o barramento LTC.
+
+- HPS_I2C1_SDAT: Representa o sinal de dados (SDAT) para a interface I2C1 do HPS, compartilhado com o barramento mencionado anteriormente.
+
+
+O G-sensor na placa está conectado ao controlador I2C0 no HPS. O endereço do dispositivo G-Sensor I2C de 7 bits é 0x53. O driver do barramento I2C do sistema é usado para acessar os arquivos de registro no sensor G (Figura X).
+
+
+Para acessar os dados vindos do sensor, via barramento, a interface cumpre uma série de passos advindos do protocolo I2C:
+
+- O processo de comunicação I2C é iniciado pelo mestre (neste caso, o HPS), ou seja, o mestre envia um sinal de início (start) no barramento I2C. Geralmente os barramentos quando estão disponíveis se encontram em nível lógico alto, nesse caso o mestre gera uma borda de descida na linha de dados. 
+
+- Em seguida, o mestre envia o endereço do dispositivo I2C que ele deseja acessar. No caso do ADXL345, esse endereço é 0xA6/0xA7, como já foi citado.
+
+
+- Dependendo da operação desejada (leitura ou escrita), o mestre indica ao dispositivo que deseja ler ou escrever dados em um dos bits após o endereço.
+  
+  - Para leitura, o dispositivo responde aos dados solicitados.
+  - Para escrever, o mestre envia os dados que deseja configurar no dispositivo.
+
+- Após cada byte de dados, o receptor (mestre ou dispositivo) envia um sinal de confirmação (ACK) para confirmar a recepção correta.
+
+- Quando a comunicação é concluída, o mestre envia um sinal de parada (stop) no barramento I2C de dados.
+
+A comunicação I2C é bidirecional, o que significa que o mestre pode enviar e receber dados para o dispositivo. Esse protocolo permite a conexão de vários dispositivos ao mesmo barramento, cada um com um endereço único. Isso facilita a integração de múltiplos sensores e dispositivos em um sistema.
+	
+O G-sensor fornece resolução selecionável pelo usuário de até 13 bits ± 16g. A resolução pode ser configurada através do registro DATA_FORAMT(0x31).
+
+O valor dos dados X/Y/Z pode ser derivado dos registros DATAX0(0x32), DATAX1(0x33), DATAY0(0x34), DATAY1(0x35), DATAZ0(0x36) e DATAX1(0x37). Sendo o DATAX0  o byte menos significativo e o DATAX1 a o byte mais significativo.
 
 <h2>Monitor CRT Dell E773C</h2>
 
