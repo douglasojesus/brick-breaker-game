@@ -93,8 +93,71 @@ A DE1-SoC (Cyclone V SoC Development and Education Board) é uma placa de desenv
   - A DE1-SoC possui botões e interruptores que podem ser utilizados como entradas do usuário em projetos, oferecendo uma forma de interação física.
 
 <h2>Acelerômetro </h2>
-<h2>Linguagem C</h2>
-<h2>Interface VGA e Monitor CRT Dell E773C</h2>
+Um acelerômetro é um dispositivo que mede a aceleração experimentada por um objeto em relação à livre aceleração de queda devido à gravidade. A maioria dos acelerômetros mede a aceleração em três direções espaciais: X, Y e Z. Essa capacidade tridimensional permite a detecção de movimentos em qualquer direção. Dessa forma, sua utilidade é notável em diversas aplicações, desde dispositivos móveis (para orientação automática da tela) até carros (para acionamento de airbags) e dispositivos médicos.
+
+Existem diversos tipos de acelerômetros, dentre eles, temos alguns mais modernos que utilizam a tecnologia MEMS (Microeletromecânica) para detectar mudanças na aceleração. Essa tecnologia envolve pequenas estruturas mecânicas em escala microscópica dentro do dispositivo. Na Figura X vemos as três principais estruturas presentes neste tipo de dispositivo, sendo eles: a massa de prova, o substrato e os eletrodos.
+
+1. Massa de Prova (Massa Móvel):
+   - A massa de prova, muitas vezes chamada de massa sísmica, é um componente chave em um acelerômetro MEMS. Trata-se de uma pequena estrutura em formato de H, com dedos sensoriais que se estendem a partir dela. Essa estrutura pode se mover em resposta à aceleração. 
+
+2. Substrato:
+   - O substrato é a base sólida sobre a qual outros componentes são construídos. No contexto de um acelerômetro MEMS, o substrato geralmente é feito de silício, um material amplamente utilizado na fabricação de dispositivos microeletromecânicos devido às suas propriedades mecânicas e elétricas favoráveis.
+
+3. Eletrodos:
+   - Eletrodos são estruturas condutoras que desempenham um papel crucial na operação do acelerômetro. Existem geralmente dois conjuntos de eletrodos associados à massa de prova:
+     - Eletrodos de Acionamento (Drive Electrodes): Geram um campo elétrico que interage com a massa de prova, forçando-a a se mover quando há aceleração.
+     - Eletrodos de Detecção (Sense Electrodes): Detectam a posição ou mudança na posição da massa de prova. A mudança na capacitância ou resistência entre os eletrodos de detecção e a massa de prova é usada para medir a aceleração.
+
+Geralmente, os acelerômetros MEMS funcionam detectando mudanças na capacitância ou resistência de pequenos elementos mecânicos quando há aceleração. O movimento do dispositivo causa deflexões microscópicas nessas estruturas, que são então convertidas em sinais elétricos mensuráveis.
+
+O que acontece na prática é que a massa de prova está ligada ao substrato pelas extremidades, tornando-se uma estrutura capaz de se mover para frente e para trás (Figura X). Os eletrodos, por sua vez, são presos de maneira fixa ao substrato formando uma estrutura de pente com a massa de prova. 
+
+Quando aplicamos uma voltagem à massa de prova e aos eletrodos, enquanto os dedos sensoriais estão perfeitamente centrados, tem-se um acúmulo igual de capacitância. Quando o acelerômetro é submetido a uma aceleração, a massa de prova se move em direção aos eletrodos. Essa aproximação e afastamento altera as características elétricas (capacitância) entre a massa de prova e os eletrodos de detecção (Figura X). 
+
+A capacitância é inversamente proporcional à distância (Figura X), dessa forma quanto maior a capacitância, menor a distância e do contrário, quanto menor a capacitância ,maior será a distância. Assim, essa capacitância é registrada e passa por uma série de estágios que amplificam a carga, convertida em um sinal elétrico proporcional à aceleração e posteriormente a converte para um sinal digital.
+
+Porém esse processo todo é capaz de ler os valores de aceleração em um só eixo, ou seja, em apenas uma direção. Sendo assim, necessita-se usar outras estruturas como essa posicionadas estrategicamente para lermos em direções diferentes.
+
+O acelerômetro digital presente na placa é o ADXL345 da Analog Devices. Ele utiliza a tecnologia MEMS para medir a aceleração em três direções (X, Y e Z). O sensor acoplado possui uma resolução ajustável, permitindo que você escolha a precisão desejada nas leituras. Os dados de aceleração são digitalizados e apresentados em formato digital para fácil processamento por dispositivos conectados.
+
+<h2>Monitor CRT Dell E773C</h2>
+
+O monitor CRT Dell E773C é um modelo de monitor de tubo de raios catódicos (CRT) produzido pela empresa Dell. Este monitor foi lançado em uma época em que os monitores CRT eram amplamente utilizados antes da popularização dos monitores de tela plana (LCD e LED).
+
+O monitor utiliza a tecnologia de tubo de raios catódicos (CRT), que era comum em monitores antes do surgimento dos monitores de tela plana. Os monitores CRT funcionam através da emissão de elétrons, por um canhão, que percorre um tubo de vácuo, que atinge uma tela revestida de fósforo para gerar a imagem (Figura X).
+
+Um cátodo, localizado na parte traseira do CRT, emite três feixes de elétrons (A), cada um representando uma cor base. Esses feixes são acelerados e direcionados para a tela revestida de fósforo (D) por um dispositivo chamado ânodo (C), que é energizado positivamente para atrair os elétrons.
+
+A tela do CRT é composta por milhares de pontos de fósforo (B) que se iluminam quando atingidos por esses elétrons. Para garantir uma boa resolução, um conjunto de três pontos de fósforo, um para cada cor base, não pode ultrapassar o tamanho de um pixel. Quando os três feixes de elétrons atingem os três pontos de fósforo de um pixel, o mesmo assume uma cor. Com milhares desses pixels na tela, uma imagem é formada.
+
+Eletroímãs localizados nos lados superior, inferior, direito e esquerdo do CRT (G e H na Figura X) controlam o posicionamento do feixe de elétrons. Os eletroímãs reagem com intensidades variáveis dependendo da energia aplicada, atraindo os feixes de elétrons para direções específicas. Por exemplo, se os feixes de elétrons precisam atingir um conjunto de três pontos de fósforo na extremidade superior esquerda da tela, os eletroímãs do lado superior e esquerdo recebem uma carga para atrair os feixes de elétrons até esse conjunto de pontos.
+
+O processo de renovação da imagem ocorre da extremidade esquerda superior para a extremidade direita inferior, sempre na direção horizontal. Após iluminar todos os pixels de uma linha, os feixes de elétrons são redirecionados para a linha abaixo, continuando até alcançar o último pixel na extremidade inferior. Quando isso ocorre, os feixes de elétrons são redirecionados para o primeiro pixel na extremidade superior.
+
+As especificações de resolução e tamanho do monitor CRT  podem variar, mas geralmente possuem resoluções mais baixas em comparação com os monitores modernos de tela plana. Nesse caso, o monitor Dell E773C possui 17 polegadas e uma taxa de atualização de 60Hz, ou seja, os feixes de elétrons precisarão acender cada pixel da tela 60 vezes a cada segundo. 
+
+Os monitores CRT geralmente ofereciam profundidades de cor mais baixas em comparação com monitores modernos, sendo comuns as profundidades de cor de 16 bits ou 24 bits.
+
+Possui uma conectividade VGA (Video Graphics Array), que era padrão na época. Isso significa que ele seria conectado ao computador por meio de um cabo VGA.
+
+<h2>Interface VGA</h2>
+A interface VGA (Video Graphics Array) é um padrão de interface de vídeo amplamente utilizado para conectar dispositivos de exibição, como monitores e telas, a computadores e outros dispositivos de processamento de vídeo.
+
+Através da interface VGA, os dispositivos transmitem sinais de vídeo como ondas analógicas para exibir imagens na tela. Isso significa que as informações de vídeo são transmitidas como variações contínuas de tensão elétrica ao longo do tempo.
+
+O conector VGA, ou cabo VGA, é um conector de 15 pinos em três linhas de 5 pinos cada. Cada linha é responsável por transmitir um tipo específico de informação: os primeiros cinco pinos (R, G, B, Hsync, Vsync) transportam os sinais de cor (vermelho, verde, azul) e os sinais de sincronização horizontal e vertical. Os demais pinos são usados como alimentação, terra, retorno, reserva, etc.
+
+- R (Vermelho): Sinal de cor vermelha.
+- G (Verde): Sinal de cor verde.
+- B (Azul): Sinal de cor azul.
+- Hsync (Sincronização Horizontal): Sinal que sincroniza a varredura horizontal da imagem.
+- Vsync (Sincronização Vertical): Sinal que sincroniza a varredura vertical da imagem.
+
+
+O padrão VGA é conhecido por sua resolução de vídeo de 640x480 pixels, embora também possa suportar resoluções mais altas, como 800x600 e 1024x768 pixels. Como dito anteriormente, essa interface permite a transmissão de sinais de vídeo em cores, possibilitando a exibição de imagens nítidas e coloridas nos dispositivos de exibição compatíveis, além de suportar várias taxas de atualização, geralmente indo de 60Hz a 75Hz. Ela é comumente encontrada em computadores pessoais, monitores de computador, projetores e outros dispositivos de exibição.
+
+Para utilizar a interface VGA, os dispositivos devem ser equipados com portas VGA correspondentes, geralmente na forma de conectores macho e fêmea de 15 pinos. Ao conectar um dispositivo de exibição a um computador ou outro dispositivo fonte através da interface VGA, é possível visualizar e interagir com conteúdo de vídeo com facilidade e clareza.
+
 
 <h1 id="desenvolvimento" align="center">Desenvolvimento e Descrição em Alto Nível</h1>
 
