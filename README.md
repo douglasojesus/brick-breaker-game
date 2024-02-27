@@ -167,7 +167,7 @@ A primeira etapa do desenvolvimento do projeto Breakout, dedicou-se a atenção 
 
 O projeto possui três telas principais, a tela de início (start game), o jogo em si e a de final de jogo (Figura X). Ao acionar o programa, a interface inicial é revelada dando a opção do usuário iniciar o jogo. Em seguida, ao selecionar a opção de start, o jogo se inicia apresentando-lhe os tijolos localizados na parte superior da tela, uma plataforma na parte inferior e o brick breaker (bola) no centro. O objetivo central do jogo é evitar que a bola (brick breaker) ultrapasse a parte inferior da tela utilizando a plataforma móvel para rebater a bola e, ao mesmo tempo, destruir todos os tijolos. Se a bola ultrapassar a área da plataforma a vida do jogador é decrementada, e se as suas vidas acabarem a partida se encerra e a pontuação é zerada.
 
-O jogo possui apenas uma fase e a pontuação é registrada de acordo com a quantidade de tijolos destruídos, atribuindo 1 ponto a cada tijolo. Além disso, possibilita-se o registro da maior pontuação já feita, sendo esse o recorde da rodada.
+O jogo possui apenas uma fase e a pontuação é registrada de acordo com a quantidade de tijolos destruídos, atribuindo 2 pontos a cada tijolo, uma vez que é necessário atingir o mesmo tijolo/ bloco duas vezes para quebrá-lo. Na primeira vez ele troca de cor e na segunda ele é destruído. Além disso, possibilita-se o registro da maior pontuação já feita, sendo esse o recorde da rodada.
 
 A plataforma reflete a bola de acordo com o ângulo de incidência, com um acréscimo ou decréscimo arbitrário de graus para evitar constância. Paredes e tijolos, da mesma forma, reagem refletindo o ângulo da bola.
 
