@@ -227,6 +227,17 @@ O buffer de caracteres para a porta de saída de vídeo é armazenado na memóri
 
 Os caracteres são endereçados na memória usando a combinação de um endereço base, que tem o valor 0xC9000000, e um deslocamento x,y. Usando este esquema, o caractere na localização 0,0 tem o endereço 0xC9000000, o caractere 1,0 tem o endereço base de endereço + (000000 0000001)₂ = 0xC9000001, o caractere 0,1 tem a base de endereço + (000001 0000000)₂ = 0xC9000080, e o caractere na localização 79,59 tem a base de endereço + (111011 1001111)₂ = 0xC9001DCF.
 
+<h2>Botão no DE1-Soc</h2>
+Os botões do DE1-SoC são elementos cruciais para interação e entrada de dados. Eles estão conectados a uma porta paralela composta por três registros de 4 bits cada. Esses registros têm o endereço base de 0xFF200050 e são acessados usando operações de palavra.
+
+A Figura (número da figura)  apresenta uma visão dos registros associados à porta paralela dos botões, incluindo seus endereços. O registro de dados fornece os estados atuais dos botões KEY3-0, sendo que é um registro de apenas leitura.
+
+O registro de máscara de interrupção permite a ativação ou desativação de interrupções quando um botão é pressionado, com cada bit representando um botão específico da placa. 
+
+Por sua vez, o registro de captura de borda registra eventos de transição dos botões, identificando qual botão foi pressionado. Sendo que qualquer valor escrito nesse registro limpa o sinal de interrupção e redefine os valores dos bits.
+
+Por fim, esses recursos fornecem uma maneira eficiente de detectar e responder a eventos de botão em sistemas baseados na placa de desenvolvimento DE1-SoC.
+
 <h1 id="desenvolvimento" align="center">Desenvolvimento e Descrição em Alto Nível</h1>
 
 <h2>DEFINICAO DAS REGRAS E ESTRUTURAS DO JOGO: ASPECTOS TÉCNICOS</h2>
