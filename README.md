@@ -172,7 +172,7 @@ O jogo possui apenas uma fase e a pontuação é registrada de acordo com a quan
 A plataforma reflete a bola de acordo com o ângulo de incidência, com um acréscimo ou decréscimo arbitrário de graus para evitar constância. Paredes e tijolos, da mesma forma, reagem refletindo o ângulo da bola.
 
 A bola é lançada inicialmente em uma certa direção, e sua velocidade permanece constante após o lançamento. Essas regras e funcionalidades combinadas proporcionam uma experiência dinâmica e estrategicamente desafiadora, ressaltando a complexidade envolvida na criação de jogos em ambientes embarcados.
-
+No DE1-SOC
 
 
 <h2>FLUXO DE EXECUÇÃO DO SISTEMA</h2>
