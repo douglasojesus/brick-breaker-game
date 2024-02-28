@@ -229,7 +229,7 @@ Um cátodo, localizado na parte traseira do CRT, emite três feixes de elétrons
 
 A tela do CRT é composta por milhares de pontos de fósforo (B) que se iluminam quando atingidos por esses elétrons. Para garantir uma boa resolução, um conjunto de três pontos de fósforo, um para cada cor base, não pode ultrapassar o tamanho de um pixel. Quando os três feixes de elétrons atingem os três pontos de fósforo de um pixel, o mesmo assume uma cor. Com milhares desses pixels na tela, uma imagem é formada.
 
-Eletroímãs localizados nos lados superior, inferior, direito e esquerdo do CRT (G e H na Figura X) controlam o posicionamento do feixe de elétrons. Os eletroímãs reagem com intensidades variáveis dependendo da energia aplicada, atraindo os feixes de elétrons para direções específicas. Por exemplo, se os feixes de elétrons precisam atingir um conjunto de três pontos de fósforo na extremidade superior esquerda da tela, os eletroímãs do lado superior e esquerdo recebem uma carga para atrair os feixes de elétrons até esse conjunto de pontos.
+Eletroímãs localizados nos lados superior, inferior, direito e esquerdo do CRT (G e H na Figura 8) controlam o posicionamento do feixe de elétrons. Os eletroímãs reagem com intensidades variáveis dependendo da energia aplicada, atraindo os feixes de elétrons para direções específicas. Por exemplo, se os feixes de elétrons precisam atingir um conjunto de três pontos de fósforo na extremidade superior esquerda da tela, os eletroímãs do lado superior e esquerdo recebem uma carga para atrair os feixes de elétrons até esse conjunto de pontos.
 
 O processo de renovação da imagem ocorre da extremidade esquerda superior para a extremidade direita inferior, sempre na direção horizontal. Após iluminar todos os pixels de uma linha, os feixes de elétrons são redirecionados para a linha abaixo, continuando até alcançar o último pixel na extremidade inferior. Quando isso ocorre, os feixes de elétrons são redirecionados para o primeiro pixel na extremidade superior.
 
@@ -260,14 +260,22 @@ Para utilizar a interface VGA, os dispositivos devem ser equipados com portas VG
 <h3>VGA no DE1-SOC</h3>
 No DE1-SOC, há uma porta de saída de vídeo conectada a um controlador VGA integrado que pode ser conectado a um monitor VGA padrão. A qual a porta de saída de vídeo suporta uma resolução de 640 x 480 pixels. A imagem a ser exibida pela porta de saída pode vim tanto de um buffer de pixels quanto de um buffer de caracteres.
 
-O Buffer de pixels da porta de saída de vídeo contém os dados de cor de cada pixel a ser exibido. Conforme é mostrado na [imagem x], este buffer fornece uma resolução de imagem de 320 × 240 pixels, com a coordenada 0,0 no canto superior esquerdo da imagem. Para suportar a resolução de tela de 640 × 480, cada valor de pixel no buffer de pixels é duplicado nas dimensões x e y quando está sendo exibido na tela.
+O Buffer de pixels da porta de saída de vídeo contém os dados de cor de cada pixel a ser exibido. Conforme é mostrado na Figura 9, este buffer fornece uma resolução de imagem de 320 × 240 pixels, com a coordenada 0,0 no canto superior esquerdo da imagem. Para suportar a resolução de tela de 640 × 480, cada valor de pixel no buffer de pixels é duplicado nas dimensões x e y quando está sendo exibido na tela.
 
+ <p align="center">
+  <img src="images/matriz_de_pixels.jpeg" alt="Figura 9.">
+</p>
 
-![Matriz de pixels](images/matriz_de_pixels.jpeg)
+<p align="center">Figura 9. Representação da matriz de pixels.</p>
 
-Cada cor de pixel é representada como uma meia palavra de 16 bits, com cinco bits para os componentes azul e vermelho e seis bits para o verde. Conforme representado na parte b da [imagem x]. Os pixels são endereçados no buffer de pixels usando a combinação de um endereço base e um deslocamento x,y. No computador DE1-SoC, o endereço padrão do buffer de pixel é 0xC8000000, que corresponde ao endereço inicial da memória no chip FPGA.
+Cada cor de pixel é representada como uma meia palavra de 16 bits, com cinco bits para os componentes azul e vermelho e seis bits para o verde. Conforme representado na parte b da Figura 10. Os pixels são endereçados no buffer de pixels usando a combinação de um endereço base e um deslocamento x,y. No computador DE1-SoC, o endereço padrão do buffer de pixel é 0xC8000000, que corresponde ao endereço inicial da memória no chip FPGA.
 
-![Valores e Endereços](images/valores_endereco_pixels.jpeg)
+ <p align="center">
+  <img src="images/valores_endereco_pixels.jpeg" alt="Figura 10.">
+</p>
+
+<p align="center">Figura 10. Representação dos valores dos pixels e dos seus endereços.</p>
+
 
 Um controlador de buffer de pixel dedicado lê continuamente esses dados de pixel a partir de endereços sequenciais na memória correspondente para exibição na tela. Você pode criar uma imagem escrevendo valores de cores nos endereços de pixel conforme descrito acima. É possível modificar os dados dos pixels a qualquer momento simplesmente escrevendo nos endereços dos pixels, permitindo assim a alteração da imagem mesmo durante o processo de exibição.
 
@@ -286,18 +294,26 @@ Na prática, enquanto a imagem contida no buffer de pixels apontado pelo registr
 
 O buffer de caracteres para a porta de saída de vídeo é armazenado na memória on-chip no FPGA na placa DE1-SoC. Este buffer fornece uma resolução de 80 × 60 caracteres, onde cada caractere ocupa um bloco de 8 × 8 pixels na tela. Os caracteres são armazenados em cada um dos locais usando seus códigos ASCII; quando esses códigos de caracteres são exibidos no monitor, o buffer de caracteres gera automaticamente o padrão correspondente de pixels para cada caractere usando uma fonte integrada.
 
-Os caracteres são endereçados na memória usando a combinação de um endereço base, que tem o valor 0xC9000000, e um deslocamento x,y. Usando este esquema, o caractere na localização 0,0 tem o endereço 0xC9000000, o caractere 1,0 tem o endereço base de endereço + (000000 0000001)₂ = 0xC9000001, o caractere 0,1 tem a base de endereço + (000001 0000000)₂ = 0xC9000080, e o caractere na localização 79,59 tem a base de endereço + (111011 1001111)₂ = 0xC9001DCF. A [imagem x] nos traz uma representação visual de como é o buffer de caracteres e como chegar aos endereços de caracteres nesse buffer.
+Os caracteres são endereçados na memória usando a combinação de um endereço base, que tem o valor 0xC9000000, e um deslocamento x,y. Usando este esquema, o caractere na localização 0,0 tem o endereço 0xC9000000, o caractere 1,0 tem o endereço base de endereço + (000000 0000001)₂ = 0xC9000001, o caractere 0,1 tem a base de endereço + (000001 0000000)₂ = 0xC9000080, e o caractere na localização 79,59 tem a base de endereço + (111011 1001111)₂ = 0xC9001DCF. A Figura 11 nos traz uma representação visual de como é o buffer de caracteres e como chegar aos endereços de caracteres nesse buffer.
 
+ <p align="center">
+  <img src="images/coordenadas.jpeg" alt="Figura 11.">
+</p>
 
-![Coordenadas](images/coordenadas.jpeg)
+<p align="center">Figura 11. Representação das coordenadas.</p>
 
 
 <h2>Botão no DE1-Soc</h2>
 Os botões do DE1-SoC são elementos cruciais para interação e entrada de dados. Eles estão conectados a uma porta paralela composta por três registros de 4 bits cada. Esses registros têm o endereço base de 0xFF200050 e são acessados usando operações de palavra.
 
-A Figura [imagem x]  apresenta uma visão dos registros associados à porta paralela dos botões, incluindo seus endereços. O registro de dados fornece os estados atuais dos botões KEY3-0, sendo que é um registro de apenas leitura.
+A Figura 12  apresenta uma visão dos registros associados à porta paralela dos botões, incluindo seus endereços. O registro de dados fornece os estados atuais dos botões KEY3-0, sendo que é um registro de apenas leitura.
 
-![Registradores utilizados](images/registrados_utilizados.png)
+ <p align="center">
+  <img src="images/registrados_utilizados.png" alt="Figura 12.">
+</p>
+
+<p align="center">Figura 12. Registradores utilizados.</p>
+
 
 O registro de máscara de interrupção permite a ativação ou desativação de interrupções quando um botão é pressionado, com cada bit representando um botão específico da placa. 
 
