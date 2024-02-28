@@ -477,7 +477,7 @@ Quando o número de vidas atinge zero, o jogo entra em um estado de "Game Over",
 
 Na fase conclusiva do projeto proposto, alcançaram-se resultados notáveis ​​em conformidade com as especificações determinadas. A implementação do jogo com sucesso demonstra a compreensão eficaz do uso dos recursos presentes na placa, tais como: botões, display lcd, acelerômetro e interface VGA.
 
-A avaliação do desempenho do sistema foi rigorosamente conduzida por meio de uma bateria abrangente de testes listados na tabela a seguir:
+A avaliação do desempenho do sistema foi rigorosamente conduzida por meio de uma bateria abrangente de testes listados a seguir:
 
 | NOME DO TESTE | **EVENTO PREVISTO** |
 |:---:|:---:|
