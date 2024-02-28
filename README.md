@@ -91,6 +91,12 @@ A DE1-SoC (Cyclone V SoC Development and Education Board) é uma placa de desenv
 
 - Botões e Interruptores:
   - A DE1-SoC possui botões e interruptores que podem ser utilizados como entradas do usuário em projetos, oferecendo uma forma de interação física.
+  - 
+  <p align="center">
+  <img src="images/image3.png" alt="Figura 1.">
+</p>
+
+<p align="center">Figura 1. Kit FPGA DE1-SoC e seus dispositivos.</p>
 
 <h2>Acelerômetro </h2>
 <h3>Funcionamento geral do dispositivo </h3>
@@ -98,6 +104,12 @@ A DE1-SoC (Cyclone V SoC Development and Education Board) é uma placa de desenv
 Um acelerômetro é um dispositivo que mede a aceleração experimentada por um objeto em relação à livre aceleração de queda devido à gravidade. A maioria dos acelerômetros mede a aceleração em três direções espaciais: X, Y e Z. Essa capacidade tridimensional permite a detecção de movimentos em qualquer direção. Dessa forma, sua utilidade é notável em diversas aplicações, desde dispositivos móveis (para orientação automática da tela) até carros (para acionamento de airbags) e dispositivos médicos.
 
 Existem diversos tipos de acelerômetros, dentre eles, temos alguns mais modernos que utilizam a tecnologia MEMS (Microeletromecânica) para detectar mudanças na aceleração. Essa tecnologia envolve pequenas estruturas mecânicas em escala microscópica dentro do dispositivo. Na Figura 2 vemos as três principais estruturas presentes neste tipo de dispositivo, sendo eles: a massa de prova, o substrato e os eletrodos.
+
+  <p align="center">
+  <img src="images/image6.png" alt="Figura 2.">
+</p>
+
+<p align="center">Figura 2. Principais estruturas do dispostivo.</p>
 
 1. Massa de Prova (Massa Móvel):
    - A massa de prova, muitas vezes chamada de massa sísmica, é um componente chave em um acelerômetro MEMS. Trata-se de uma pequena estrutura em formato de H, com dedos sensoriais que se estendem a partir dela. Essa estrutura pode se mover em resposta à aceleração. 
@@ -114,9 +126,28 @@ Geralmente, os acelerômetros MEMS funcionam detectando mudanças na capacitânc
 
 O que acontece na prática é que a massa de prova está ligada ao substrato pelas extremidades, tornando-se uma estrutura capaz de se mover para frente e para trás (Figura 3). Os eletrodos, por sua vez, são presos de maneira fixa ao substrato formando uma estrutura de pente com a massa de prova. 
 
+<p align="center">
+  <img src="images/image9.png" alt="Figura 3.">
+</p>
+
+<p align="center">Figura 3. Ilustração da massa de prova ligada ao subtrato.</p>
+
+
 Quando aplicamos uma voltagem à massa de prova e aos eletrodos, enquanto os dedos sensoriais estão perfeitamente centrados, tem-se um acúmulo igual de capacitância. Quando o acelerômetro é submetido a uma aceleração, a massa de prova se move em direção aos eletrodos. Essa aproximação e afastamento altera as características elétricas (capacitância) entre a massa de prova e os eletrodos de detecção (Figura 4). 
 
+<p align="center">
+  <img src="images/image12.png" alt="Figura 4.">
+</p>
+
+<p align="center">Figura 4. Ilustração da capacitância gerada pela aproximação entre a massa de prova e os eletrodos.</p>
+
 A capacitância é inversamente proporcional à distância (Figura 5), dessa forma quanto maior a capacitância, menor a distância e do contrário, quanto menor a capacitância ,maior será a distância. Assim, essa capacitância é registrada e passa por uma série de estágios que amplificam a carga, convertida em um sinal elétrico proporcional à aceleração e posteriormente a converte para um sinal digital.
+
+  <p align="center">
+  <img src="images/image4.png" alt="Figura 5.">
+</p>
+
+<p align="center">Figura 5. Fórmula da capacitância.</p>
 
 Porém esse processo todo é capaz de ler os valores de aceleração em um só eixo, ou seja, em apenas uma direção. Sendo assim, necessita-se usar outras estruturas como essa posicionadas estrategicamente para lermos em direções diferentes.
 
@@ -128,7 +159,19 @@ Os dados de aceleração são digitalizados e apresentados em formato digital pa
 
 A interface I2C (Circuito Interintegrado) é um protocolo de comunicação serial utilizado para a transferência de dados entre dispositivos em um barramento. No contexto do sensor de acelerômetro ADXL345, a comunicação I2C é utilizada para acessar e transferir dados digitais entre a placa DE1-SoC (HPS - Hard Processor System) e o sensor ADXL345 (Figura 6).
 
+  <p align="center">
+  <img src="images/image13.png" alt="Figura 6.">
+</p>
+
+<p align="center">Figura 6. Conexão entre a Cyclone V (HPS) e o G sensor.</p>
+
 As conexões e informações relacionadas aos pinos (FPGA Pin) e suas funcionalidades na interface entre o HPS (Hard Processor System) e o sensor G (acelerômetro) na placa DE1-SoC estão representadas na Tabela 1.
+
+ <p align="center">
+  <img src="images/image8.png" alt="Tabela 1.">
+</p>
+
+<p align="center">Tabela 1. Tabela de atribuição dos pinos do G sensor.</p>
 
 Nomes dos sinais e suas descrições:
 
@@ -141,6 +184,11 @@ Nomes dos sinais e suas descrições:
 
 O G-sensor na placa está conectado ao controlador I2C0 no HPS. O endereço do dispositivo G-Sensor I2C de 7 bits é 0x53. O driver do barramento I2C do sistema é usado para acessar os arquivos de registro no sensor G (Figura 7).
 
+<p align="center">
+  <img src="images/image7.png" alt="Figura 7.">
+</p>
+
+<p align="center">Figura 7. Diagrama de blocos da demonstração do G sensor e suas conexões.</p>
 
 Para acessar os dados vindos do sensor, via barramento, a interface cumpre uma série de passos advindos do protocolo I2C:
 
@@ -169,6 +217,13 @@ O valor dos dados X/Y/Z pode ser derivado dos registros DATAX0(0x32), DATAX1(0x3
 O monitor CRT Dell E773C é um modelo de monitor de tubo de raios catódicos (CRT) produzido pela empresa Dell. Este monitor foi lançado em uma época em que os monitores CRT eram amplamente utilizados antes da popularização dos monitores de tela plana (LCD e LED).
 
 O monitor utiliza a tecnologia de tubo de raios catódicos (CRT), que era comum em monitores antes do surgimento dos monitores de tela plana. Os monitores CRT funcionam através da emissão de elétrons, por um canhão, que percorre um tubo de vácuo, que atinge uma tela revestida de fósforo para gerar a imagem (Figura 8).
+
+ <p align="center">
+  <img src="images/image11.png" alt="Figura 8.">
+</p>
+
+<p align="center">Figura 8. Representação da formação da imagem em um monitor CRT.</p>
+
 
 Um cátodo, localizado na parte traseira do CRT, emite três feixes de elétrons (A), cada um representando uma cor base. Esses feixes são acelerados e direcionados para a tela revestida de fósforo (D) por um dispositivo chamado ânodo (C), que é energizado positivamente para atrair os elétrons.
 
