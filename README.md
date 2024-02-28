@@ -212,10 +212,9 @@ O Buffer de pixels da porta de saída de vídeo contém os dados de cor de cada 
 
 Cada cor de pixel é representada como uma meia palavra de 16 bits, com cinco bits para os componentes azul e vermelho e seis bits para o verde. Conforme representado na parte b da [imagem x]. Os pixels são endereçados no buffer de pixels usando a combinação de um endereço base e um deslocamento x,y. No computador DE1-SoC, o endereço padrão do buffer de pixel é 0xC8000000, que corresponde ao endereço inicial da memória no chip FPGA.
 
-Um controlador de buffer de pixel dedicado lê continuamente esses dados de pixel a partir de endereços sequenciais na memória correspondente para exibição na tela. Você pode criar uma imagem escrevendo valores de cores nos endereços de pixel conforme descrito acima. É possível modificar os dados dos pixels a qualquer momento simplesmente escrevendo nos endereços dos pixels, permitindo assim a alteração da imagem mesmo durante o processo de exibição.
-
-
 ![Valores e Endereços](images/valores_endereco_pixels.jpeg)
+
+Um controlador de buffer de pixel dedicado lê continuamente esses dados de pixel a partir de endereços sequenciais na memória correspondente para exibição na tela. Você pode criar uma imagem escrevendo valores de cores nos endereços de pixel conforme descrito acima. É possível modificar os dados dos pixels a qualquer momento simplesmente escrevendo nos endereços dos pixels, permitindo assim a alteração da imagem mesmo durante o processo de exibição.
 
 
 No entanto, para evitar fazer alterações ao buffer de pixel enquanto ele está sendo exibido, pode-se usar o conceito de buffer duplo. Neste esquema, dois buffers de pixels estão envolvidos, chamados de buffers frontal e traseiro. Isso permite que uma imagem seja renderizada em um buffer enquanto o outro está sendo exibido, proporcionando uma transição suave entre as imagens e evitando artefatos visuais durante a atualização.
