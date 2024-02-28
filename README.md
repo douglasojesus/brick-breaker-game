@@ -240,7 +240,9 @@ Os caracteres são endereçados na memória usando a combinação de um endereç
 <h2>Botão no DE1-Soc</h2>
 Os botões do DE1-SoC são elementos cruciais para interação e entrada de dados. Eles estão conectados a uma porta paralela composta por três registros de 4 bits cada. Esses registros têm o endereço base de 0xFF200050 e são acessados usando operações de palavra.
 
-A Figura (número da figura)  apresenta uma visão dos registros associados à porta paralela dos botões, incluindo seus endereços. O registro de dados fornece os estados atuais dos botões KEY3-0, sendo que é um registro de apenas leitura.
+A Figura [imagem x]  apresenta uma visão dos registros associados à porta paralela dos botões, incluindo seus endereços. O registro de dados fornece os estados atuais dos botões KEY3-0, sendo que é um registro de apenas leitura.
+
+![Registradores utilizados](images/registrados_utilizados.png)
 
 O registro de máscara de interrupção permite a ativação ou desativação de interrupções quando um botão é pressionado, com cada bit representando um botão específico da placa. 
 
