@@ -207,17 +207,16 @@ No DE1-SOC, há uma porta de saída de vídeo conectada a um controlador VGA int
 
 O Buffer de pixels da porta de saída de vídeo contém os dados de cor de cada pixel a ser exibido. Conforme é mostrado na [imagem x], este buffer fornece uma resolução de imagem de 320 × 240 pixels, com a coordenada 0,0 no canto superior esquerdo da imagem. Para suportar a resolução de tela de 640 × 480, cada valor de pixel no buffer de pixels é duplicado nas dimensões x e y quando está sendo exibido na tela.
 
-<center>
+
 ![Matriz de pixels](images/matriz_de_pixels.jpeg)
-</center>
 
 Cada cor de pixel é representada como uma meia palavra de 16 bits, com cinco bits para os componentes azul e vermelho e seis bits para o verde. Conforme representado na parte b da [imagem x]. Os pixels são endereçados no buffer de pixels usando a combinação de um endereço base e um deslocamento x,y. No computador DE1-SoC, o endereço padrão do buffer de pixel é 0xC8000000, que corresponde ao endereço inicial da memória no chip FPGA.
 
 Um controlador de buffer de pixel dedicado lê continuamente esses dados de pixel a partir de endereços sequenciais na memória correspondente para exibição na tela. Você pode criar uma imagem escrevendo valores de cores nos endereços de pixel conforme descrito acima. É possível modificar os dados dos pixels a qualquer momento simplesmente escrevendo nos endereços dos pixels, permitindo assim a alteração da imagem mesmo durante o processo de exibição.
 
-<center>
+
 ![Valores e Endereços](images/valores_endereco_pixels.jpeg)
-</center>
+
 
 No entanto, para evitar fazer alterações ao buffer de pixel enquanto ele está sendo exibido, pode-se usar o conceito de buffer duplo. Neste esquema, dois buffers de pixels estão envolvidos, chamados de buffers frontal e traseiro. Isso permite que uma imagem seja renderizada em um buffer enquanto o outro está sendo exibido, proporcionando uma transição suave entre as imagens e evitando artefatos visuais durante a atualização.
 
@@ -235,9 +234,9 @@ O buffer de caracteres para a porta de saída de vídeo é armazenado na memóri
 
 Os caracteres são endereçados na memória usando a combinação de um endereço base, que tem o valor 0xC9000000, e um deslocamento x,y. Usando este esquema, o caractere na localização 0,0 tem o endereço 0xC9000000, o caractere 1,0 tem o endereço base de endereço + (000000 0000001)₂ = 0xC9000001, o caractere 0,1 tem a base de endereço + (000001 0000000)₂ = 0xC9000080, e o caractere na localização 79,59 tem a base de endereço + (111011 1001111)₂ = 0xC9001DCF. A [imagem x] nos traz uma representação visual de como é o buffer de caracteres e como chegar aos endereços de caracteres nesse buffer.
 
-<center>
+
 ![Coordenadas](images/coordenadas.jpeg)
-</center>
+
 
 <h2>Botão no DE1-Soc</h2>
 Os botões do DE1-SoC são elementos cruciais para interação e entrada de dados. Eles estão conectados a uma porta paralela composta por três registros de 4 bits cada. Esses registros têm o endereço base de 0xFF200050 e são acessados usando operações de palavra.
