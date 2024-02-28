@@ -308,16 +308,15 @@ Os botões do DE1-SoC são elementos cruciais para interação e entrada de dado
 
 A Figura 12  apresenta uma visão dos registros associados à porta paralela dos botões, incluindo seus endereços. O registro de dados fornece os estados atuais dos botões KEY3-0, sendo que é um registro de apenas leitura.
 
+O registro de máscara de interrupção permite a ativação ou desativação de interrupções quando um botão é pressionado, com cada bit representando um botão específico da placa. 
+
+Por sua vez, o registro de captura de borda registra eventos de transição dos botões, identificando qual botão foi pressionado. Sendo que qualquer valor escrito nesse registro limpa o sinal de interrupção e redefine os valores dos bits.
+
  <p align="center">
   <img src="images/registrados_utilizados.png" alt="Figura 12.">
 </p>
 
 <p align="center">Figura 12. Registradores utilizados.</p>
-
-
-O registro de máscara de interrupção permite a ativação ou desativação de interrupções quando um botão é pressionado, com cada bit representando um botão específico da placa. 
-
-Por sua vez, o registro de captura de borda registra eventos de transição dos botões, identificando qual botão foi pressionado. Sendo que qualquer valor escrito nesse registro limpa o sinal de interrupção e redefine os valores dos bits.
 
 Por fim, esses recursos fornecem uma maneira eficiente de detectar e responder a eventos de botão em sistemas baseados na placa de desenvolvimento DE1-SoC.
 
