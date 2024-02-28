@@ -512,14 +512,14 @@ O aprendizado derivado deste projeto vai além da simples realização técnica,
 
 <h1 id="bibliografia" align="center">Bibliografia</h1>
 
-- Manual da placa DE1-SoC: ,acessado em 02 de 2024;
+- Manual da placa DE1-SoC: https://fpgacademy.org/Downloads/DE1_SoC_User_Manual.pdf ,acessado em 02 de 2024;
 
 <h1 id="script-de-compilacao" align="center">Uso do projeto</h1
 								   
-- Com o acelerômetro e o monitor CRT 640x480 conectados na placa DE1-SOC, é necessário fazer a conexão na placa e mover o repositório para ela.
+Com o acelerômetro e o monitor CRT 640x480 conectados na placa DE1-SOC, é necessário fazer a conexão na placa e mover o repositório para ela.
 
-- Na pasta src, o usuário deve executar através do make all, com o GCC instalado. 
+Na pasta src, o usuário deve executar através do make all, com o GCC instalado. 
 
-- A raquete será movida a partir da movimentação da placa com o acelerômetro.
+A raquete será movida a partir da movimentação da placa com o acelerômetro.
 
-- Observação: o funcionamento pode falhar dependendo do endereço dos dispositivos de E/S.
+Observação: o funcionamento pode falhar dependendo do endereço dos dispositivos de E/S.
