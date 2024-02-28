@@ -327,7 +327,13 @@ Por fim, esses recursos fornecem uma maneira eficiente de detectar e responder a
 
 A primeira etapa do desenvolvimento do projeto Breakout, dedicou-se a atenção meticulosa à definição das regras e funcionalidades fundamentais que moldarão a experiência de jogo. Cada aspecto foi estrategicamente concebido para garantir não apenas a essência do jogo original, mas também uma execução eficiente no contexto de sistemas embarcados.
 
-O projeto possui três telas principais, a tela de início (start game), o jogo em si e a de final de jogo (Figura X). Ao acionar o programa, a interface inicial é revelada dando a opção do usuário iniciar o jogo. Em seguida, ao selecionar a opção de start, o jogo se inicia apresentando-lhe os tijolos localizados na parte superior da tela, uma plataforma na parte inferior e o brick breaker (bola) no centro. O objetivo central do jogo é evitar que a bola (brick breaker) ultrapasse a parte inferior da tela utilizando a plataforma móvel para rebater a bola e, ao mesmo tempo, destruir todos os tijolos. Se a bola ultrapassar a área da plataforma a vida do jogador é decrementada, e se as suas vidas acabarem a partida se encerra e a pontuação é zerada.
+O projeto possui três telas principais, a tela de início (start game), o jogo em si e a de final de jogo (Figura 13). Ao acionar o programa, a interface inicial é revelada dando a opção do usuário iniciar o jogo. Em seguida, ao selecionar a opção de start, o jogo se inicia apresentando-lhe os tijolos localizados na parte superior da tela, uma plataforma na parte inferior e o brick breaker (bola) no centro. O objetivo central do jogo é evitar que a bola (brick breaker) ultrapasse a parte inferior da tela utilizando a plataforma móvel para rebater a bola e, ao mesmo tempo, destruir todos os tijolos. Se a bola ultrapassar a área da plataforma a vida do jogador é decrementada, e se as suas vidas acabarem a partida se encerra e a pontuação é zerada.
+
+ <p align="center">
+  <img src="images/image10.png" alt="Figura 13.">
+</p>
+
+<p align="center">Figura 13. Represetanção das telas do jogo.</p>
 
 O jogo possui apenas uma fase e a pontuação é registrada de acordo com a quantidade de tijolos destruídos, atribuindo 2 pontos a cada tijolo, uma vez que é necessário atingir o mesmo tijolo/ bloco duas vezes para quebrá-lo. Na primeira vez ele troca de cor e na segunda ele é destruído. Além disso, possibilita-se o registro da maior pontuação já feita, sendo esse o recorde da rodada.
 
@@ -341,7 +347,13 @@ No DE1-SOC
 
 O fluxo de execução do sistema do jogo segue uma sequência lógica que abrange desde a conexão e inicialização até as iterações principais do jogo.
 
-Antes da inicialização do programa, o usuário estabelece uma conexão via SSH com a placa FPGA DE1-SoC. Isso pode ser feito através do terminal do sistema operacional do computador através de um comando específico para o acesso. Após a conexão SSH ser estabelecida com sucesso, o usuário pode transferir o código fonte do jogo e os recursos necessários para a placa. Ademais, necessita-se também fazer a conexão da placa com o monitor CRT, através do cabo VGA, que será responsável pela exibição do jogo (Figura X).
+Antes da inicialização do programa, o usuário estabelece uma conexão via SSH com a placa FPGA DE1-SoC. Isso pode ser feito através do terminal do sistema operacional do computador através de um comando específico para o acesso. Após a conexão SSH ser estabelecida com sucesso, o usuário pode transferir o código fonte do jogo e os recursos necessários para a placa. Ademais, necessita-se também fazer a conexão da placa com o monitor CRT, através do cabo VGA, que será responsável pela exibição do jogo (Figura 14).
+
+ <p align="center">
+  <img src="images/image2.png" alt="Figura 14.">
+</p>
+
+<p align="center">Figura 14. Diagarama de comunicação dos dispositivos.</p>
 
 O programa se dá com a inicialização de recursos e bibliotecas essenciais, que controlam o sistema de vídeo VGA, módulo de entrada dos botões, display de 7 segmentos para a demonstração das “vidas” do jogador e o acelerômetro. Em seguida, são definidas as estruturas principais do jogo, como a plataforma, a bola e os blocos. 
 
@@ -370,9 +382,21 @@ A exibição do jogo e seus elementos na tela é facilitada pela biblioteca lint
 
 O pixel buffer é uma área de memória designada para armazenar a representação gráfica dos elementos do jogo, como a bola, a raquete e os blocos. Ele atua como um espaço intermediário onde as alterações visuais são aplicadas antes de serem refletidas na tela. 
 
-A função video_show() desempenha um papel vital no processo, uma vez que, atualiza a tela com as informações contidas no pixel buffer. Essa função efetua o processo de "swap" entre o Backbuffer e o Buffer Register. Isso significa que, ao escrever ou apagar informações na tela, os valores alterados são inicialmente armazenados no Backbuffer. O video_show() executa o swap, fazendo com que o Buffer Register agora referencie o Backbuffer atualizado, resultando na exibição visual dessas alterações na tela (Figura X). Essa técnica é chamada de Double-Buffering.
+A função video_show() desempenha um papel vital no processo, uma vez que, atualiza a tela com as informações contidas no pixel buffer. Essa função efetua o processo de "swap" entre o Backbuffer e o Buffer Register. Isso significa que, ao escrever ou apagar informações na tela, os valores alterados são inicialmente armazenados no Backbuffer. O video_show() executa o swap, fazendo com que o Buffer Register agora referencie o Backbuffer atualizado, resultando na exibição visual dessas alterações na tela (Figura 15). Essa técnica é chamada de Double-Buffering.
 
-Válido ressaltar que a área do pixel buffer é de 320x240, enquanto o monitor utilizado possui uma resolução de 640x480. Dessa forma, entende-se que cada valor do pixel será duplicado nas direções x e y (Figura X).
+ <p align="center">
+  <img src="images/image1.gif" alt="Figura 15.">
+</p>
+
+<p align="center">Figura 15. Representação do processo de Double-Buffering.</p>
+
+Válido ressaltar que a área do pixel buffer é de 320x240, enquanto o monitor utilizado possui uma resolução de 640x480. Dessa forma, entende-se que cada valor do pixel será duplicado nas direções x e y (Figura 16).
+
+ <p align="center">
+  <img src="images/image5.png" alt="Figura 16.">
+</p>
+
+<p align="center">Figura 16. Representação da duplicação dos pixels de 1x1 para 2x2.</p>
 
 Ademais, tem-se a função video_box() que é utilizada para desenhar caixas (ou retângulos) na tela, preenchendo determinadas áreas com cores específicas. Nesse contexto, essa função é empregada para renderizar a raquete, a bola, os blocos e outros elementos visuais. As coordenadas e dimensões dos elementos são especificadas como argumentos para posicionar e dimensionar corretamente cada componente do jogo.
 
