@@ -207,6 +207,8 @@ No DE1-SOC, há uma porta de saída de vídeo conectada a um controlador VGA int
 
 O Buffer de pixels da porta de saída de vídeo contém os dados de cor de cada pixel a ser exibido. Conforme é mostrado na [imagem x], este buffer fornece uma resolução de imagem de 320 × 240 pixels, com a coordenada 0,0 no canto superior esquerdo da imagem. Para suportar a resolução de tela de 640 × 480, cada valor de pixel no buffer de pixels é duplicado nas dimensões x e y quando está sendo exibido na tela.
 
+![Matriz de pixels](images/matriz_de_pixels.jpeg)
+
 Cada cor de pixel é representada como uma meia palavra de 16 bits, com cinco bits para os componentes azul e vermelho e seis bits para o verde. Conforme representado na parte b da [imagem x]. Os pixels são endereçados no buffer de pixels usando a combinação de um endereço base e um deslocamento x,y. No computador DE1-SoC, o endereço padrão do buffer de pixel é 0xC8000000, que corresponde ao endereço inicial da memória no chip FPGA.
 
 Um controlador de buffer de pixel dedicado lê continuamente esses dados de pixel a partir de endereços sequenciais na memória correspondente para exibição na tela. Você pode criar uma imagem escrevendo valores de cores nos endereços de pixel conforme descrito acima. É possível modificar os dados dos pixels a qualquer momento simplesmente escrevendo nos endereços dos pixels, permitindo assim a alteração da imagem mesmo durante o processo de exibição.
