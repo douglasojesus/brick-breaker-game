@@ -499,7 +499,7 @@ A avaliação do desempenho do sistema foi rigorosamente conduzida por meio de u
 | COLISÃO DUPLA COM O TIJOLO  | CASO DA BOLA COLIDIR EM DOIS TIJOLOS DIFERENTES |
 | INICIALIZAÇÃO ALEATÓRIA DA BOLA  | A BOLA DE SER INICIADA DE MANEIRA ALEATÓRIA APÓS PERDER |
 
-Para fornecer uma visão detalhada sobre as estatísticas e resultados obtidos, disponibilizamos um link para um vídeo contendo todos os testes realizados [inserir link]. Esta forma de se exibir os testes oferece uma análise visual aprofundada de cada componente do sistema, destacando tanto os sucessos quanto as áreas de melhoria identificadas durante os testes.
+Para fornecer uma visão detalhada sobre as estatísticas e resultados obtidos, disponibilizamos um link para um vídeo contendo todos os testes realizados: https://www.youtube.com/watch?v=aIF27KevEsE&ab_channel=DouglasdeJesus. Esta forma de se exibir os testes oferece uma análise visual aprofundada de cada componente do sistema, destacando tanto os sucessos quanto as áreas de melhoria identificadas durante os testes.
 
 Durante as simulações, observe-se que [insira observações específicas sobre simulações, se aplicáveis]. Os resultados obtidos e analisados ​​foram importantes significativamente para a compreensão do desempenho do projeto em diversas situações e cenários.
 
