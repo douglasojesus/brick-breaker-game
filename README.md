@@ -368,6 +368,34 @@ Quando o número de vidas atinge zero, o jogo entra em um estado de "Game Over",
 
 <h1 id="descricao-e-analise-dos-testes" align="center">Descrição e Análise dos Testes e Simulações, Resultados e Discussões</h1>
 
+Na fase conclusiva do projeto proposto, alcançaram-se resultados notáveis ​​em conformidade com as especificações determinadas. A implementação do jogo com sucesso demonstra a compreensão eficaz do uso dos recursos presentes na placa, tais como: botões, display lcd, acelerômetro e interface VGA.
+
+A avaliação do desempenho do sistema foi rigorosamente conduzida por meio de uma bateria abrangente de testes listados na tabela a seguir:
+
+| NOME DO TESTE | **EVENTO PREVISTO** |
+|:---:|:---:|
+|  |  |
+| PAUSAR | JOGO DEVE SER PAUSADO |
+| COLIDIR COM RAQUETE | Y DA BOLA É INVERTIDO |
+| COLIDIR COM TIJOLO | LADO ESQUERDO: X DA BOLA É INVERTIDO |
+| COLIDIR COM TIJOLO | LADO DIREITO: X DA BOLA É INVERTIDO |
+| COLIDIR COM TIJOLO | LADO SUPERIOR: Y DA BOLA É INVERTIDO |
+| COLIDIR COM TIJOLO | LADO INFERIOR: Y DA BOLA É INVERTIDO |
+| COLIDIR COM PAREDE | LADO DIREITO: X DA BOLA É INVERTIDO |
+| COLIDIR COM PAREDE | LADO ESQUERDO: X DA BOLA É INVERTIDO |
+| COLIDIR COM PAREDE | LADO SUPERIOR: Y DA BOLA É INVERTIDO |
+| COLIDIR COM LOSE ZONE | PERDE UMA VIDA |
+| COLIDIR COM LOSE ZONE 3 VEZES  | PERDE JOGO (TELA DE FIM DE JOGO) |
+| ELIMINAR TODOS OS BLOCOS  | BLOCOS SÃO INICIALIZADOS NOVAMENTE |
+| ATUALIZAR RECORD  | PONTUAÇÃO SUPERIOR AO RECORD |
+| REINICIAR JOGO  | APÓS PERDER, CLICAR NO BOTÃO 1 REINICIA A PARTIDA |
+| COLISÃO DUPLA COM O TIJOLO  | CASO DA BOLA COLIDIR EM DOIS TIJOLOS DIFERENTES |
+| INICIALIZAÇÃO ALEATÓRIA DA BOLA  | A BOLA DE SER INICIADA DE MANEIRA ALEATÓRIA APÓS PERDER |
+
+Para fornecer uma visão detalhada sobre as estatísticas e resultados obtidos, disponibilizamos um link para um vídeo contendo todos os testes realizados [inserir link]. Esta forma de se exibir os testes oferece uma análise visual aprofundada de cada componente do sistema, destacando tanto os sucessos quanto as áreas de melhoria identificadas durante os testes.
+
+Durante as simulações, observe-se que [insira observações específicas sobre simulações, se aplicáveis]. Os resultados obtidos e analisados ​​foram importantes significativamente para a compreensão do desempenho do projeto em diversas situações e cenários.
+
 <h1 id="conclusao" align="center">Conclusão</h1>
 
 A execução bem-sucedida deste projeto destaca a valiosa aprendizagem obtida ao enfrentar desafios no desenvolvimento de jogos em sistemas embarcados com recursos limitados. A integração eficaz entre o acelerômetro, os botões e a interface VGA no Kit FPGA DE1-SoC não apenas resultou em uma experiência de jogo fluida e responsiva, mas também proporcionou insights valiosos sobre a otimização de recursos em ambientes computacionais embarcados.
